@@ -186,4 +186,5 @@ jobs:
       - uses: actions/upload-artifact@v3
         with:
           name: gdal-${{ matrix.config.gdal }}-${{ matrix.platform }}-windows-${{ matrix.VS_VER }}-py${{ matrix.config.python }}
-          path: *.whl
+          path: |
+            *.whl

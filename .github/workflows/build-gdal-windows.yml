@@ -41,6 +41,7 @@ jobs:
         LIBZSTD_URL: "${{ matrix.LIBZSTD_URL }}"
         LIBDEFLATE_URL: "${{ matrix.LIBDEFLATE_URL }}"
         PYTHON_VERSION: ${{ matrix.config.python }}
+        GDAL_VERSION: ${{ matrix.config.gdal }}
 
     steps:
 
@@ -181,7 +182,9 @@ jobs:
             $env:DO_NOT_FAIL_ON_RECODE_ERRORS="YES"
             $env:MDB_ODBC_DRIVER_INSTALLED="YES"
             $env:GDAL_HTTP_UNSAFESSL="YES"
-            python3 -m pip wheel .
+            python3 -m pip download GDAL==$env:GDAL_VERSION
+            tar -xvzf GDAL-$env:GDAL_VERSION.tar.gz
+            python3 -m pip wheel GDAL-$env:GDAL_VERSION
       - uses: actions/upload-artifact@v3
         with:
           name: gdal-${{ matrix.config.gdal }}-${{ matrix.platform }}-windows-${{ matrix.VS_VER }}-py${{ matrix.config.python }}

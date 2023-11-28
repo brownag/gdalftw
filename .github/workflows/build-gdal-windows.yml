@@ -12,21 +12,21 @@ concurrency:
 
 jobs:
 
-  windows_build:
+  whl:
 
     runs-on: ${{ matrix.config.os }}
 
     strategy:
       matrix:
         config:
-          - {os: windows-2022, python: '3.10.5', gdal: '3.8.0'}
+          - {os: windows-2022, python: '3.10.5', gdal: '3.8.0', proj: '7.2'}
         include:
           - VS_VERSION: Visual Studio 17
             VS_VER: 2022
             SDK: release-1911 # gisinternals SDK version still to 2017
             MSVC_VER: 1920
             platform: x86
-            PROJ_BRANCH: "7.2"
+            PROJ_BRANCH: ${{ matrix.config.proj }}
             LIBWEBP_URL: "https://storage.googleapis.com/downloads.webmproject.org/releases/webp/libwebp-1.0.3-windows-x86.zip"
             LIBZSTD_URL: "https://github.com/facebook/zstd/releases/download/v1.4.5/zstd-v1.4.5-win32.zip"
             LIBDEFLATE_URL: "https://github.com/ebiggers/libdeflate/releases/download/v1.6/libdeflate-1.6-windows-i686-bin.zip"
@@ -182,7 +182,7 @@ jobs:
             $env:DO_NOT_FAIL_ON_RECODE_ERRORS="YES"
             $env:MDB_ODBC_DRIVER_INSTALLED="YES"
             $env:GDAL_HTTP_UNSAFESSL="YES"
-            python3 -m pip wheel -r requirements.txt
+            python3 -m pip wheel .
       - uses: actions/upload-artifact@v3
         with:
           name: gdal-${{ matrix.config.gdal }}-${{ matrix.platform }}-windows-${{ matrix.VS_VER }}-py${{ matrix.config.python }}

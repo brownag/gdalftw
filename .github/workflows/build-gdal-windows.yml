@@ -184,7 +184,8 @@ jobs:
             $env:GDAL_HTTP_UNSAFESSL="YES"
             python3 -m pip download GDAL==$env:GDAL_VERSION
             tar -xvzf GDAL-$env:GDAL_VERSION.tar.gz
-            python3 -m pip wheel GDAL-$env:GDAL_VERSION
+            cd ./GDAL-$env:GDAL_VERSION/
+            python3 -m pip wheel .
       - uses: actions/upload-artifact@v3
         with:
           name: gdal-${{ matrix.config.gdal }}-${{ matrix.platform }}-windows-${{ matrix.VS_VER }}-py${{ matrix.config.python }}
